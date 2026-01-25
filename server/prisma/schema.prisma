@@ -13,14 +13,21 @@ datasource db {
   provider = "postgresql"
 }
 
+enum Role {
+  ADMIN
+  OFFICER
+  CUSTOMER_SERVICE
+}
+
 model User {
   id        String   @id @default(uuid())
   name      String
   email     String   @unique
   password  String
-  role      String
-  loans     Loan[]
+  role      Role
   createdAt DateTime @default(now())
+
+  loans Loan[] @relation("OfficerLoans")
 }
 
 model Borrower {
@@ -28,6 +35,7 @@ model Borrower {
   name  String
   phone String
   email String
+
   loans Loan[]
 }
 
@@ -43,17 +51,18 @@ model Loan {
   officerId  String
   borrowerId String
 
-  officer  User      @relation(fields: [officerId], references: [id])
-  borrower Borrower  @relation(fields: [borrowerId], references: [id])
+  officer  User     @relation("OfficerLoans", fields: [officerId], references: [id])
+  borrower Borrower @relation(fields: [borrowerId], references: [id])
+
   payments Payment[]
 }
 
 model Payment {
   id      String    @id @default(uuid())
-  loanId  String
   dueDate DateTime
   paid    Boolean   @default(false)
   paidAt  DateTime?
 
-  loan Loan @relation(fields: [loanId], references: [id])
+  loanId String
+  loan   Loan   @relation(fields: [loanId], references: [id])
 }
