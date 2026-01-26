@@ -9,11 +9,21 @@ const router = Router();
 // Login route (accessible by all roles)
 router.post("/login", login);
 
+// create Admin 
+router.post(
+  "/create-admin",
+  authenticateToken,
+  authorize(Role.SUPER_ADMIN),
+  registerUser,
+);
+
+
+// SUPER_ADMIN + ADMIN → create OFFICER / CUSTOMER_SERVICE
 // Register user route (accessible by Admin only)
 router.post(
   "/register",
   authenticateToken,
-  authorize(Role.ADMIN, Role.OFFICER),
+  authorize(Role.SUPER_ADMIN, Role.ADMIN),
   registerUser,
 );
 

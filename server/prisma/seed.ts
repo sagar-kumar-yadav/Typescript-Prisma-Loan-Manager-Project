@@ -4,7 +4,7 @@ import prisma from "../src/config/db";
 import { Role } from "../src/generated/prisma/client";
 
 async function main() {
-  const superAdminEmail = "superadmin@system.com";
+  const superAdminEmail = process.env.SUPER_ADMIN_EMAIL!;
 
   // Check if super admin already exists
   const existingSuperAdmin = await prisma.user.findUnique({
@@ -18,7 +18,7 @@ async function main() {
 
   const hashedPassword = await bcrypt.hash(
     process.env.SUPER_ADMIN_PASSWORD!,
-    10,
+    parseInt(process.env.SALT_ROUNDS!),
   );
 
   await prisma.user.create({
