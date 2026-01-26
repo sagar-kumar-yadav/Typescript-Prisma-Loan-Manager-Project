@@ -1,32 +1,36 @@
 import "dotenv/config";
 import bcrypt from "bcrypt";
 import prisma from "../src/config/db";
+import { Role } from "../src/generated/prisma/client";
 
 async function main() {
-  const adminEmail = "admin@example.com";
+  const superAdminEmail = "superadmin@system.com";
 
-  // Check if admin already exists
-  const existingAdmin = await prisma.user.findUnique({
-    where: { email: adminEmail },
+  // Check if super admin already exists
+  const existingSuperAdmin = await prisma.user.findUnique({
+    where: { email: superAdminEmail },
   });
 
-  if (existingAdmin) {
-    console.log("⚠️ Admin already exists. Skipping seed.");
+  if (existingSuperAdmin) {
+    console.log("⚠️ Super Admin already exists. Skipping seed.");
     return;
   }
 
-  const hashedPassword = await bcrypt.hash("admin123", 10);
+  const hashedPassword = await bcrypt.hash(
+    process.env.SUPER_ADMIN_PASSWORD!,
+    10,
+  );
 
   await prisma.user.create({
     data: {
-      name: "Admin",
-      email: adminEmail,
+      name: "Super Admin",
+      email: superAdminEmail,
       password: hashedPassword,
-      role: "ADMIN", // must match Prisma enum
+      role: Role.SUPER_ADMIN, // must match Prisma enum
     },
   });
 
-  console.log("✅ Admin user seeded successfully");
+  console.log("✅ Super Admin user seeded successfully");
 }
 
 main()

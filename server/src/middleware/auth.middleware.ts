@@ -1,8 +1,12 @@
-import { Request, Response, NextFunction } from "express";
+// JWT Auth Middleware (verify token)
+import { Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import { Role } from "../generated/prisma/client";
+import { AuthRequest } from "../types/auth";
 
-export interface AuthRequest extends Request {
-  user?: any;
+interface JwtPayload {
+  id: string;
+  role: Role;
 }
 
 export const authenticateToken = (
@@ -10,8 +14,8 @@ export const authenticateToken = (
   res: Response,
   next: NextFunction,
 ) => {
-  // get token from headers
   const token = req.headers.authorization?.split(" ")[1];
+
 
   // check if token exists or not
   if (!token) {
@@ -20,10 +24,14 @@ export const authenticateToken = (
 
   // verify token
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
-    req.user = decoded;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
+    req.user = {
+      id: decoded.id,
+      role: decoded.role,
+    };
+
     next();
-  } catch (err) {
+  } catch (error) {
     return res.sendStatus(403).json({ message: "invalid token" }); // Forbidden
   }
 };
