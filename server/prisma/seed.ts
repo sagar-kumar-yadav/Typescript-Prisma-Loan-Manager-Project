@@ -3,7 +3,10 @@ import bcrypt from "bcrypt";
 import prisma from "../src/config/db";
 import { Role } from "../src/generated/prisma/client";
 
+// Defines the main seeding function
+// Database operations are asynchronous, so the function needs to handle promises
 async function main() {
+  // The ! operator: TypeScript non-null assertion - tells the compiler this won't be undefined 
   const superAdminEmail = process.env.SUPER_ADMIN_EMAIL!;
 
   // Check if super admin already exists
