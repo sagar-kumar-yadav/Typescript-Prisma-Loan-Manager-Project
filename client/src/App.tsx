@@ -1,8 +1,9 @@
 import './App.css'
+import Router from './app/router'
 function App() {
   return (
     <>
-    <div className="text-2xl font-bold text-blue-500">hi</div>    
+      <Router />
     </>
   )
 }

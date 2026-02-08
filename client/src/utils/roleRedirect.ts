@@ -9,7 +9,7 @@ export const roleRedirect = (role: string, navigate: any) => {
         case "OFFICER":
             navigate("/officer");
             break;
-        case "CUSTOMER":
+        case "CUSTOMER_SERVICE":
             navigate("/customer");
             break;
         default:

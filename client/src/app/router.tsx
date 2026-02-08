@@ -6,20 +6,45 @@ import Login from "../auth/pages/Login";
 import OfficerDashboard from "../dashboard/OfficerDashboard";
 import CustomerDashboard from "../dashboard/CustomerDashboard";
 
-const Router=()=>(
-    <Routes>
-        <Route path="/login" element={<Login/>}/>
+const Router = () => (
+  <Routes>
+    <Route path="/login" element={<Login />} />
 
-        <Route path="/super-admin" element={<ProtectedRoute roles={["SUPER_ADMIN"]}>
-            <SuperAdminDashboard/>
-        </ProtectedRoute>}/>
+    <Route
+      path="/super-admin"
+      element={
+        <ProtectedRoute roles={["SUPER_ADMIN"]}>
+          <SuperAdminDashboard />
+        </ProtectedRoute>
+      }
+    />
 
-        <Route path="/admin" element={<ProtectedRoute roles={["ADMIN"]}><AdminDashboard/></ProtectedRoute>}/>
+    <Route
+      path="/admin"
+      element={
+        <ProtectedRoute roles={["ADMIN"]}>
+          <AdminDashboard />
+        </ProtectedRoute>
+      }
+    />
 
-        <Route path="/officer" element={<ProtectedRoute roles={["OFFICER"]}><OfficerDashboard/></ProtectedRoute>}/>
+    <Route
+      path="/officer"
+      element={
+        <ProtectedRoute roles={["OFFICER"]}>
+          <OfficerDashboard />
+        </ProtectedRoute>
+      }
+    />
 
-        <Route path="/CUSTOMER_SERVICE" element={<ProtectedRoute roles={["CUSTOMER_SERVICE"]}><CustomerDashboard/></ProtectedRoute>}/>
-    </Routes>
-
+    <Route
+      path="/customer"
+      element={
+        <ProtectedRoute roles={["CUSTOMER_SERVICE"]}>
+          <CustomerDashboard />
+        </ProtectedRoute>
+      }
+    />
+  </Routes>
 );
 export default Router;
