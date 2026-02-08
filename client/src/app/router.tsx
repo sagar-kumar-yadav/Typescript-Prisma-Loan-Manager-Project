@@ -5,10 +5,13 @@ import AdminDashboard from "../dashboard/AdminDashboard";
 import Login from "../auth/pages/Login";
 import OfficerDashboard from "../dashboard/OfficerDashboard";
 import CustomerDashboard from "../dashboard/CustomerDashboard";
+import PageNotFound from "../pages/PageNotFound";
 
 const Router = () => (
   <Routes>
-    <Route path="/login" element={<Login />} />
+    <Route path="*" element={<PageNotFound />} />
+    <Route path="/" element={<Login />} />
+    {/* <Route path="/login" element={<Login />} /> */}
 
     <Route
       path="/super-admin"
