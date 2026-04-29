@@ -9,7 +9,7 @@ const router = Router();
 // Login route (accessible by all roles)
 router.post("/login", login);
 
-// create Admin 
+// create Admin npx prisma generate
 router.post(
   "/create-admin",
   authenticateToken,
